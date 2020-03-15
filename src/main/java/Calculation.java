@@ -1,6 +1,8 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static java.lang.Double.NaN;
+
 
 /**
  * Класс вызывающий работу калькулятора
@@ -40,26 +42,15 @@ public class Calculation {
             }
 
             if (selectOperation > 0 && selectOperation < 5) {
-                switch (selectOperation) {
-                    case (1):
-                        Sum(getOneObject.getFirst(), getOneObject.getSecond());
-                        break;
-                    case (2):
-                        Minus(getOneObject.getFirst(), getOneObject.getSecond());
-                        break;
-                    case (3):
-                        Umno(getOneObject.getFirst(), getOneObject.getSecond());
-                        break;
-                    case (4):
-                        Delen(getOneObject.getFirst(), getOneObject.getSecond());
-                        break;
-                }
+                choiceOperation(selectOperation, getOneObject.getFirst(), getOneObject.getSecond());
                 exit = nextStep(getNumber);
             }
             else
             {
                 break;
             }
+
+
         }
         getNumber.close();
     }
@@ -84,29 +75,36 @@ public class Calculation {
      * @param b
      */
 
-    public static void Sum(double a, double b) {
+    public static double Sum(double a, double b) {
         double LinkSum = a + b;
         System.out.printf(a + " + " + b + " = %.4f\n", LinkSum);
+        return LinkSum;
     }
 
-    public static void Minus(double a, double b) {
+    public static double Minus(double a, double b) {
         double LinkMinus = a - b;
         System.out.printf(a + " - " + b + " = %.4f\n",LinkMinus);
+        return LinkMinus;
     }
 
-    public static void Umno(double a, double b) {
+    public static double Umno(double a, double b) {
         double LinkUmno = a * b;
         System.out.printf(a + " * " + b + " = %.4f\n", LinkUmno);
+        return LinkUmno;
     }
 
-    public static void Delen(double a, double b) {
+    public static double Delen(double a, double b) {
+        double LinkDelen = 0;
         try {
-            double LinkDelen = a / b;
+            LinkDelen = a / b;
             System.out.printf(a + " / " + b + " = %.4f\n", LinkDelen);
         } catch (ArithmeticException e) {
             System.out.println("На ноль делить нельзя!");
         }
-
+        if (Double.isNaN(LinkDelen)) {
+            System.out.println("На ноль делить нельзя!");
+        }
+        return LinkDelen;
     }
 
     /**
@@ -126,5 +124,24 @@ public class Calculation {
 
     }
 
-}
+    public static double choiceOperation(byte selectOperation, double a, double b)
+    {
+        double result = 0;
+        switch (selectOperation) {
+            case (1):
+                result = Sum(a, b);
+                break;
+            case (2):
+                result = Minus(a, b);
+                break;
+            case (3):
+                result = Umno(a, b);
+                break;
+            case (4):
+                result = Delen(a, b);
+                break;
+        }
+        return result;
+    }
 
+}
